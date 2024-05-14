@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.android_live_firebase_chat.MainViewModel
 import com.example.android_live_firebase_chat.R
 import com.example.android_live_firebase_chat.databinding.FragmentLoginBinding
+import com.example.android_live_firebase_chat.utils.Debug
 
 class LoginFragment : Fragment() {
     private lateinit var viewBinding: FragmentLoginBinding
@@ -31,14 +33,6 @@ class LoginFragment : Fragment() {
         setButtonRegisterOnClickListener()
     }
 
-    private fun addObservers() {
-        viewModel.currentUser.observe(viewLifecycleOwner) { firebaseUser ->
-            if (firebaseUser != null) {
-                findNavController().navigate(R.id.homeFragment)
-            }
-        }
-    }
-
     private fun setButtonLoginOnClickListener() {
         viewBinding.btLogin.setOnClickListener {
             val email = viewBinding.tietEmail.text.toString()
@@ -51,5 +45,24 @@ class LoginFragment : Fragment() {
         viewBinding.btToRegister.setOnClickListener {
             findNavController().navigate(R.id.registerFragment)
         }
+    }
+
+    private fun addObservers() {
+        viewModel.currentUser.observe(viewLifecycleOwner) { firebaseUser ->
+            if (firebaseUser != null) {
+                findNavController().navigate(R.id.homeFragment)
+            }
+        }
+
+        viewModel.toastMessage.observe(viewLifecycleOwner) { message ->
+            if (message != null) {
+                showToast(message)
+                viewModel.resetToastMessage()
+            }
+        }
+    }
+
+    private fun showToast(text: String = Debug.TOAST_EMPTY_MESSAGE_SET.value) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }

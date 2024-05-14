@@ -1,5 +1,6 @@
 package com.example.android_live_firebase_chat.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -24,18 +25,29 @@ class ChatAdapter(
         }
     }
 
-    inner class ChatInViewHolder(val binding: ItemChatInBinding): RecyclerView.ViewHolder(binding.root)
-    inner class ChatOutViewHolder(val binding: ItemChatOutBinding): RecyclerView.ViewHolder(binding.root)
+    inner class ChatInViewHolder(val binding: ItemChatInBinding): ViewHolder(binding.root)
+    inner class ChatOutViewHolder(val binding: ItemChatOutBinding): ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        if (viewType == chatInType) {
+            val binding = ItemChatInBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ChatInViewHolder(binding)
+        }
+        val binding = ItemChatOutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ChatOutViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return dataset.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val message = dataset[position]
+
+        if (holder is ChatInViewHolder) {
+            holder.binding.tvChatIn.text = message.text
+        } else if (holder is ChatOutViewHolder) {
+            holder.binding.tvChatOut.text = message.text
+        }
     }
 }
