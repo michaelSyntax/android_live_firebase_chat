@@ -9,4 +9,6 @@
     <string name="logout">Logout</string>
     <string name="send">Send</string>
     <string name="chats">Chats</string>
+    <string name="chat_message_out">Chat Message Out</string>
+    <string name="chat_message_in">Chat Message In</string>
 </resources>
