@@ -11,6 +11,7 @@ import com.example.android_live_firebase_chat.MainViewModel
 import com.example.android_live_firebase_chat.R
 import com.example.android_live_firebase_chat.adapter.UserAdapter
 import com.example.android_live_firebase_chat.databinding.FragmentHomeBinding
+import com.example.android_live_firebase_chat.model.Profile
 
 class HomeFragment : Fragment() {
     private lateinit var viewBinding: FragmentHomeBinding
@@ -28,12 +29,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addObservers()
-        setButtonLogoutOnClickListener()
         setupChatList()
+        setButtonLogoutOnClickListener()
     }
 
     private fun setupChatList() {
-        viewBinding.rvUsers.adapter = UserAdapter(listOf(), viewModel)
+        viewModel.profileRef.addSnapshotListener { value, error ->
+            if (error == null && value != null) {
+                val userList = value.map { it.toObject(Profile::class.java) }.toMutableList()
+                userList.removeAll { it.userId == viewModel.currentUser.value!!.uid }
+                viewBinding.rvUsers.adapter = UserAdapter(userList, viewModel)
+            }
+        }
     }
 
     private fun setButtonLogoutOnClickListener() {
