@@ -6,4 +6,7 @@
     <string name="register">Register</string>
     <string name="username">Username</string>
     <string name="back">Back</string>
+    <string name="logout">Logout</string>
+    <string name="send">Send</string>
+    <string name="chats">Chats</string>
 </resources>
