@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "449396860268",
+    "project_id": "auth-test-project-e9f19",
+    "storage_bucket": "auth-test-project-e9f19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449396860268:android:f4463e79ff63685ce5ff49",
+        "android_client_info": {
+          "package_name": "com.example.android_live_firebase_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATNiitmATC5uTKQrL2Mv0hQCVUw3nYrp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449396860268:android:93a0834b4a421924e5ff49",
+        "android_client_info": {
+          "package_name": "com.example.authapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATNiitmATC5uTKQrL2Mv0hQCVUw3nYrp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
