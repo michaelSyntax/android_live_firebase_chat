@@ -5,5 +5,5 @@ import com.google.firebase.firestore.DocumentId
 data class Chat(
     @DocumentId
     val chatId: String = "",
-    val message: MutableList<Message> = mutableListOf()
+    val messages: MutableList<Message> = mutableListOf()
 )

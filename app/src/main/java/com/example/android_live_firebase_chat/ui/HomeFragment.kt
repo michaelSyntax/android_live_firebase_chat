@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupChatList() {
-        viewModel.profileRef.addSnapshotListener { value, error ->
+        viewModel.profileCollectionReference.addSnapshotListener { value, error ->
             if (error == null && value != null) {
                 val userList = value.map { it.toObject(Profile::class.java) }.toMutableList()
                 userList.removeAll { it.userId == viewModel.currentUser.value!!.uid }
