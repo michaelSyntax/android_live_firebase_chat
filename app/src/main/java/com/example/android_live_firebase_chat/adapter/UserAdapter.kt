@@ -1,5 +1,6 @@
 package com.example.android_live_firebase_chat.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_live_firebase_chat.MainViewModel
@@ -14,14 +15,16 @@ class UserAdapter(
     inner class UserViewHolder(val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        TODO("Not yet implemented")
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UserViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return dataset.size
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val profileItem = dataset[position]
+        holder.binding.tvUsername.text = profileItem.username
     }
 }
