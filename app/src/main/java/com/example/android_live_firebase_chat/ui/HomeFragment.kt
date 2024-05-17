@@ -6,12 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.android_live_firebase_chat.MainViewModel
+import com.example.android_live_firebase_chat.R
 import com.example.android_live_firebase_chat.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var viewBinding: FragmentHomeBinding
     private val viewModel: MainViewModel by activityViewModels()
+
+    /**
+     * TODO: Logout
+     *  - beim click auf logout button
+     *      1. logout von firebase
+     *      2. navigieren zum loginView
+     */
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,5 +33,22 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setLogoutButtonOnClickListener()
+        addObservers()
+    }
+
+    private fun addObservers() {
+        viewModel.currentUser.observe(viewLifecycleOwner) { firebaseUser ->
+            if (firebaseUser == null) {
+                findNavController().navigate(R.id.loginFragment)
+            }
+        }
+    }
+
+    private fun setLogoutButtonOnClickListener() {
+        viewBinding.btLogout.setOnClickListener {
+            viewModel.logout()
+        }
     }
 }

@@ -49,4 +49,9 @@ class MainViewModel: ViewModel() {
             }
         }
     }
+
+    fun logout() {
+        firebaseAuth.signOut()
+        _currentUser.value = firebaseAuth.currentUser
+    }
 }
