@@ -20,7 +20,7 @@ class ChatFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentChatBinding.inflate(inflater, container, false)
+        viewBinding = FragmentChatBinding.inflate(layoutInflater)
         return viewBinding.root
     }
 
@@ -32,7 +32,7 @@ class ChatFragment : Fragment() {
 
     private fun setupChatMessages() {
         viewModel.currentChatDocumentReference.addSnapshotListener { value, error ->
-            if (value != null && error == null) {
+            if (error == null && value != null) {
                 val chat = value.toObject(Chat::class.java)
                 val chatMessages = chat?.messages
                 viewBinding.rvChatMessages.adapter = chatMessages?.let { ChatAdapter(it, viewModel.currentUser.value!!.uid) }
@@ -44,6 +44,7 @@ class ChatFragment : Fragment() {
         viewBinding.btSend.setOnClickListener {
             val message = viewBinding.tietMessage.text.toString()
             viewModel.sendMessage(message)
+            viewBinding.tietMessage.setText("")
         }
     }
 }

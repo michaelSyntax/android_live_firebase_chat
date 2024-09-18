@@ -74,21 +74,6 @@ class MainViewModel: ViewModel() {
         _currentUser.value = firebaseAuth.currentUser
     }
 
-    fun sendMessage(message: String) {
-        val newMessage = Message(message, firebaseAuth.currentUser!!.uid)
-        currentChatDocumentReference.update("messages", FieldValue.arrayUnion(newMessage))
-    }
-
-    fun setCurrentChat(chatPartnerId: String) {
-        val chatId = createChatId(chatPartnerId, currentUser.value!!.uid)
-        currentChatDocumentReference = firestore.collection("chats").document(chatId)
-        currentChatDocumentReference.get().addOnCompleteListener { task ->
-            if (task.isSuccessful && task.result != null && !task.result.exists()) {
-                currentChatDocumentReference.set(Chat())
-            }
-        }
-    }
-
     fun resetToastMessage() {
         _toastMessage.value = null
     }
@@ -106,12 +91,27 @@ class MainViewModel: ViewModel() {
         Log.e(Debug.AUTH_TAG.value, message)
     }
 
+    private fun setProfileDocumentReference() {
+        profileDocumentReference = profileCollectionReference.document(firebaseAuth.currentUser!!.uid)
+    }
+
+    fun sendMessage(message: String) {
+        val newMessage = Message(message, firebaseAuth.currentUser!!.uid)
+        currentChatDocumentReference.update("messages", FieldValue.arrayUnion(newMessage))
+    }
+
+    fun setCurrentChat(chatPartnerId: String) {
+        val chatId = createChatId(chatPartnerId, currentUser.value!!.uid)
+        currentChatDocumentReference = firestore.collection("chats").document(chatId)
+        currentChatDocumentReference.get().addOnCompleteListener { task ->
+            if (task.isSuccessful && task.result != null && !task.result.exists()) {
+                currentChatDocumentReference.set(Chat())
+            }
+        }
+    }
+
     private fun createChatId(id1: String, id2: String): String {
         val ids = listOf(id1, id2).sorted()
         return ids.first() + ids.last()
-    }
-
-    private fun setProfileDocumentReference() {
-        profileDocumentReference = profileCollectionReference.document(firebaseAuth.currentUser!!.uid)
     }
 }
