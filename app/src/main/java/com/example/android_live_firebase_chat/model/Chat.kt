@@ -2,8 +2,8 @@ package com.example.android_live_firebase_chat.model
 
 import com.google.firebase.firestore.DocumentId
 
-data class Profile(
+data class Chat(
     @DocumentId
-    val userId: String = "",
-    val username: String = ""
+    val chatId: String = "",
+    val messages: MutableList<Message> = mutableListOf()
 )
