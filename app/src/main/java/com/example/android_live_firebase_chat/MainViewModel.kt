@@ -4,49 +4,55 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.android_live_firebase_chat.model.Profile
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 
 class MainViewModel: ViewModel() {
-    private val firebaseAuth = Firebase.auth
-    private val _currentUser = MutableLiveData<FirebaseUser?>()
-    val currentUser: LiveData<FirebaseUser?>
-        get() = _currentUser
-
     /**
      * TODO
      * - AUTH
-     * - login fun (email, password)
-     * - register fun (email, password, username)
-     * - logout fun logout()
-     * - liveData for currentUser
-     * ------------------------------
+     * - fun login (email, password) -> firebase Auth signIn
+     * - fun register (email, password, username)
+     * - fun logout
      *
-     *
+     * - liveData für currentUser
      */
 
-    fun register(email: String, password: String, username: String) {
-        if (email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()) {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { authResult ->
-                if (authResult.isSuccessful) {
-                    _currentUser.value = firebaseAuth.currentUser
-                } else {
-                    Log.e("AUTH", "register ${authResult.exception?.message.toString()}")
-                }
+    private val auth = Firebase.auth
+    private val firestore = Firebase.firestore
+
+    val profilesRef = firestore.collection("profiles")
+
+    private var _currentUser = MutableLiveData<FirebaseUser?>(auth.currentUser)
+    val currentUser: LiveData<FirebaseUser?>
+        get() = _currentUser
+
+    fun login(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { authResult ->
+            if (authResult.isSuccessful) {
+                _currentUser.value = auth.currentUser
+            } else {
+                Log.e("AUTH", authResult.exception?.message.toString())
             }
         }
     }
 
-    fun login(email: String, password: String) {
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { authResult ->
-                if (authResult.isSuccessful) {
-                    _currentUser.value = firebaseAuth.currentUser
-                } else {
-                    Log.e("AUTH", "register ${authResult.exception?.message.toString()}")
-                }
+    fun register(email: String, password: String, username: String) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { authResult ->
+            if (authResult.isSuccessful) {
+                _currentUser.value = auth.currentUser
+                profilesRef.document(auth.currentUser!!.uid).set(Profile(username))
+            } else {
+                Log.e("AUTH", authResult.exception?.message.toString())
             }
         }
+    }
+
+    fun logout() {
+        auth.signOut()
+        _currentUser.value = auth.currentUser
     }
 }

@@ -12,6 +12,12 @@ import com.example.android_live_firebase_chat.R
 import com.example.android_live_firebase_chat.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
+    /**
+     * TODO:
+     * 1. Button Back CL navigate to LoginFragment.
+     * 2. Button Register CL rufe register fun im VM auf.
+     * 3. CurrentUser observe und zum HomeFragment navigieren.
+     */
     private lateinit var viewBinding: FragmentRegisterBinding
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -20,42 +26,31 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewBinding = FragmentRegisterBinding.inflate(inflater, container, false)
+        viewBinding = FragmentRegisterBinding.inflate(layoutInflater)
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setButtonsOnClickListener()
-        setupObservers()
-    }
 
-    private fun setupObservers() {
-        viewModel.currentUser.observe(viewLifecycleOwner) { authResult ->
-            if (authResult != null) {
-                findNavController().navigate(R.id.homeFragment)
-            }
-        }
-    }
-
-    private fun setButtonsOnClickListener() {
-        setRegisterButtonOnClickListener()
-        setBackButtonOnClickListener()
-    }
-
-    private fun setBackButtonOnClickListener() {
         viewBinding.btBackToLogin.setOnClickListener {
             findNavController().navigate(R.id.loginFragment)
         }
-    }
 
-    private fun setRegisterButtonOnClickListener() {
         viewBinding.btRegister.setOnClickListener {
             val email = viewBinding.tietEmailRegister.text.toString()
             val password = viewBinding.tietPasswordRegister.text.toString()
             val username = viewBinding.tietUsername.text.toString()
 
-            viewModel.register(email, password, username)
+            if (email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()) {
+                viewModel.register(email, password, username)
+            }
+        }
+
+        viewModel.currentUser.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                findNavController().navigate(R.id.homeFragment)
+            }
         }
     }
 }
