@@ -14,6 +14,12 @@ import com.example.android_live_firebase_chat.databinding.FragmentLoginBinding
 import com.example.android_live_firebase_chat.utils.Debug
 
 class LoginFragment : Fragment() {
+    /**
+     * TODO
+     * 1. Button Login mit ClickLsitener und viewModel fun login call aufrufen.
+     * 2. Button ToRegister mit CL navigate nach RegisterFragment
+     * 3. CurrentUser aus VM beobachten und evtl. navigieren.
+     */
     private lateinit var viewBinding: FragmentLoginBinding
     private val viewModel: MainViewModel by activityViewModels()
 

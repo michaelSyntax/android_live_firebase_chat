@@ -17,6 +17,25 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 
 class MainViewModel: ViewModel() {
+    /**
+     * TODO
+     * - AUTH
+     * - fun login (email, password) -> firebase Auth signIn
+     * - fun register (email, password, username)
+     * - fun logout
+     *
+     * - liveData für currentUser
+     */
+
+    /**
+     * TODO:
+     * - CHAT
+     * 1. fun create / setCurrentChat mit chatPartnerId
+     * 2. fun createChatId (id1, id2)
+     * 3. fun sendMessage(text: String)
+     * 4. currentChat erstellen als DocumentRef
+     */
+
     private val firebaseAuth = Firebase.auth
     private val firestore = Firebase.firestore
 
@@ -38,6 +57,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
+    /** Auth */
     fun register(email: String, password: String, username: String) {
         if (email.isNotBlank() && password.isNotBlank() && username.isNotBlank()) {
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { authResult ->
@@ -95,6 +115,11 @@ class MainViewModel: ViewModel() {
         profileDocumentReference = profileCollectionReference.document(firebaseAuth.currentUser!!.uid)
     }
 
+    /** Chat */
+
+    /**
+     * FieldValue.arrayUnion: für Elemete zum Array hinzu.
+     */
     fun sendMessage(message: String) {
         val newMessage = Message(message, firebaseAuth.currentUser!!.uid)
         currentChatDocumentReference.update("messages", FieldValue.arrayUnion(newMessage))
@@ -104,12 +129,22 @@ class MainViewModel: ViewModel() {
         val chatId = createChatId(chatPartnerId, currentUser.value!!.uid)
         currentChatDocumentReference = firestore.collection("chats").document(chatId)
         currentChatDocumentReference.get().addOnCompleteListener { task ->
+            /**
+             * Falls es noch keinen Chat mit diesem User gibt, dann erstellle einen
+             * leeren Chat.
+             */
             if (task.isSuccessful && task.result != null && !task.result.exists()) {
                 currentChatDocumentReference.set(Chat())
             }
         }
     }
 
+    /**
+     * id1 = A
+     * id2 = B
+     * chatId = BA wenn wir sender sind.
+     * und wenn ChartParnter Sender ist: chatID AB
+     */
     private fun createChatId(id1: String, id2: String): String {
         val ids = listOf(id1, id2).sorted()
         return ids.first() + ids.last()

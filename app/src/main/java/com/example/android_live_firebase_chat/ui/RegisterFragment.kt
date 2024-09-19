@@ -14,6 +14,12 @@ import com.example.android_live_firebase_chat.databinding.FragmentRegisterBindin
 import com.example.android_live_firebase_chat.utils.Debug
 
 class RegisterFragment : Fragment() {
+    /**
+     * TODO:
+     * 1. Button Back CL navigate to LoginFragment.
+     * 2. Button Register CL rufe register fun im VM auf.
+     * 3. CurrentUser observe und zum HomeFragment navigieren.
+     */
     private lateinit var viewBinding: FragmentRegisterBinding
     private val viewModel: MainViewModel by activityViewModels()
 

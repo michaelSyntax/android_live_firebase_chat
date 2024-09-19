@@ -14,6 +14,13 @@ import com.example.android_live_firebase_chat.databinding.FragmentHomeBinding
 import com.example.android_live_firebase_chat.model.Profile
 
 class HomeFragment : Fragment() {
+    /**
+     * TODO:
+     * 1. Button Logout mit CL und call VM logout.
+     * 2. Liste an Profilen anzeigen.
+     *      2.1 ProfileAdapter anlegen.
+     * 3. CurrentUser beobachten und evtl. navigieren.
+     */
     private lateinit var viewBinding: FragmentHomeBinding
     private val viewModel: MainViewModel by activityViewModels()
 
